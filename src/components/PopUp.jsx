@@ -4,7 +4,6 @@ import '../App.css';
 class PopUp extends Component{
     constructor(){
         super();
-
         this.formSubmitted = this.formSubmitted.bind(this);
     }
 
@@ -14,10 +13,10 @@ class PopUp extends Component{
 
     render(){
         return(
-            <div style={{position: 'relative', width: 'inherit', height: 'inherit'}}>
+            <div style={{position: 'relative', width: 'inherit', height: 'inherit'}} onClick={this.props.hidePopUp}>
                 <div id="transparentGrayBG">
                 </div>
-                <div id="modal">
+                <div id="modal" onClick={(e) => e.stopPropagation()}>
                 <center>
                     <br/>
                     <h2 style={{margin: '0px'}}>Contact</h2><br/>

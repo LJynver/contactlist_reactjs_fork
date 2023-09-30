@@ -10,10 +10,17 @@ class App extends Component{
       hidePopUp: true
     }
     this.popUpActs = this.popUpActs.bind(this);
+    this.hidePopUp = this.hidePopUp.bind(this);
   }
 
   popUpActs(action){
-    
+    if (action == 1) {
+      this.setState({hidePopUp: false})
+    }
+  }
+
+  hidePopUp () {
+    this.setState({hidePopUp: true});
   }
 
 
@@ -21,7 +28,7 @@ class App extends Component{
     var self = this;
     var contactsData;
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "https://doited-error.000webhostapp.com/read.php", true);
+    xhttp.open("GET", "http://localhost/contactlist_reactjs_fork/src/backends/read.php", true);
     xhttp.send();
     xhttp.onreadystatechange = function(){
       if(this.readyState == 4 && this.status == 200){
@@ -73,10 +80,10 @@ class App extends Component{
               </tbody>
             </table>
             <br/>
-            <button style={{float: 'right', fontSize: '16px'}} onClick={this.popUpActs(1)}>ADD CONTACT</button>
+            <button style={{float: 'right', fontSize: '16px'}} onClick={() => this.popUpActs(1)}>ADD CONTACT</button>
         </div>
         <div hidden={this.state.hidePopUp} id="addContactPopup" style={{width: '100%', height: '100vh', position: 'absolute'}}>
-          <PopUp/>
+          <PopUp hidePopUp={this.hidePopUp}/>
         </div>
 
       </div>
