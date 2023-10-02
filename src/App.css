@@ -62,5 +62,22 @@
 }
 .actionButtons{
   color: white; 
-  width: 100%;
+  width: 80%;
+  padding: 10px;
+}
+
+.MainTable {
+  margin-right: auto;
+  margin-left: auto;
+  width: 90%;
+  text-align: center;
+}
+
+.MainTable, .MainTable th, .MainTable td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+.AddButton {
+  
 }

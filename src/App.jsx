@@ -24,11 +24,11 @@ class App extends Component{
   }
 
 
-  componentDidMount(){
+  componentDidMount() {
     var self = this;
     var contactsData;
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "http://localhost/contactlist_reactjs_fork/src/backends/read.php", true);
+    xhttp.open("GET", "https://contlist.000webhostapp.com/read.php", true);
     xhttp.send();
     xhttp.onreadystatechange = function(){
       if(this.readyState == 4 && this.status == 200){
@@ -47,9 +47,9 @@ class App extends Component{
   render(){
     return(
       <div style={{position: 'relative', width: '100%'}}>
-        <div id="contactList" style={{width: '100%', position: 'absolute'}}>
+        <div id="contactList" className='divTable'>
             <center><h1>Contact List</h1></center>
-            <table id="contactTable" border="1" style={{width: '100%', border: '1px solid black'}}>
+            <table id="contactTable" className='MainTable'>
               <thead>
                 <tr>
                     <th>ID</th>
@@ -80,7 +80,7 @@ class App extends Component{
               </tbody>
             </table>
             <br/>
-            <button style={{float: 'right', fontSize: '16px'}} onClick={() => this.popUpActs(1)}>ADD CONTACT</button>
+            <button className='AddButton' onClick={() => this.popUpActs(1)}>ADD CONTACT</button>
         </div>
         <div hidden={this.state.hidePopUp} id="addContactPopup" style={{width: '100%', height: '100vh', position: 'absolute'}}>
           <PopUp hidePopUp={this.hidePopUp}/>
