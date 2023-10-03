@@ -44,6 +44,10 @@
 .inputFields{
   width: 75%;
   margin-bottom: 10px;
+  border-style: solid;
+  border-radius: 6px;
+  border-color: #767676;
+  padding: 4px;
 }
 #transparentGrayBG{
   position: absolute; 
@@ -61,9 +65,10 @@
   top: 25%;
 }
 .actionButtons{
+  display: inline;
   color: white; 
   width: 80%;
-  padding: 10px;
+  padding: 5px;
 }
 
 .MainTable {
@@ -78,6 +83,6 @@
   border-collapse: collapse;
 }
 
-.AddButton {
-  
+.divTable {
+  text-align: center;
 }

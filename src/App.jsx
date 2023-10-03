@@ -1,34 +1,25 @@
 import './App.css'
 import React, {Component} from 'react'
-import PopUp from './components/PopUp.jsx';
+import FormInterface from './components/FormInterface.jsx';
+import { withRouter } from 'react-router-dom/cjs/react-router-dom.min';
 
 class App extends Component{
   constructor(){
     super();
     this.state = {
-      data: [],
-      hidePopUp: true
-    }
-    this.popUpActs = this.popUpActs.bind(this);
-    this.hidePopUp = this.hidePopUp.bind(this);
-  }
-
-  popUpActs(action){
-    if (action == 1) {
-      this.setState({hidePopUp: false})
+      data: []
     }
   }
 
-  hidePopUp () {
-    this.setState({hidePopUp: true});
+  handleButtonClick = () => {
+    this.props.history.push('/form-interface');
   }
-
 
   componentDidMount() {
     var self = this;
     var contactsData;
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "https://contlist.000webhostapp.com/read.php", true);
+    xhttp.open("GET", "http://localhost/contactlist_reactjs_fork/src/backends/read.php", true);
     xhttp.send();
     xhttp.onreadystatechange = function(){
       if(this.readyState == 4 && this.status == 200){
@@ -80,15 +71,11 @@ class App extends Component{
               </tbody>
             </table>
             <br/>
-            <button className='AddButton' onClick={() => this.popUpActs(1)}>ADD CONTACT</button>
+            <button className='AddButton' onClick={this.handleButtonClick}>Add New</button>
         </div>
-        <div hidden={this.state.hidePopUp} id="addContactPopup" style={{width: '100%', height: '100vh', position: 'absolute'}}>
-          <PopUp hidePopUp={this.hidePopUp}/>
-        </div>
-
       </div>
     );
   }
 }
 
-export default App
+export default withRouter(App);
