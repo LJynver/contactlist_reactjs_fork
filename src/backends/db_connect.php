@@ -4,8 +4,8 @@
 
     $servername = "localhost";
     $username = "root";
-    $password = "phpJOVER@2102";
-    $dbname = "my-database-2102";
+    $password = "";
+    $dbname = "lejdb";
     
     //turning on the connection
     $conn = new mysqli($servername, $username, $password, $dbname);

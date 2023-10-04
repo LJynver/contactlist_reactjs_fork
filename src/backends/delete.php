@@ -1,12 +1,12 @@
 <?php
-    include_once("db_connect.php");
+    require("db_connect.php");
     $retVal = "Delete failed.";
     $status = 400;
 
     $id = trim($_REQUEST['id']);
 
     try {
-        $stmt = $con->prepare("DELETE FROM contact WHERE id = $id");
+        $stmt = $conn->prepare("DELETE FROM contact WHERE id = $id");
         $stmt->execute();
         $stmt->close();
         $status = 200;

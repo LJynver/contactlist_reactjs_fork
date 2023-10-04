@@ -9,10 +9,42 @@ class App extends Component{
     this.state = {
       data: []
     }
+    this.deleteEntry = this.deleteEntry.bind(this);
   }
 
   handleButtonClick = () => {
     this.props.history.push('/form-interface');
+  }
+
+  deleteEntry(id) {
+    if (confirm("This entry will be deleted! Proceed?")) {
+      fetch('http://localhost/contactlist_reactjs_fork/src/backends/delete.php', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded'
+        },
+        body: 'id='+id
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        alert(res["message"]);
+        if (res["message"] == 200) {
+          var arr = this.state.data;
+          const delIndex = arr.findIndex(function(item) {
+            item.id === id;
+          });
+          if (delIndex !== -1) {
+            arr.splice(delIndex, 1);
+          }
+          this.state({
+            data: arr
+          });
+        }
+      })
+      .catch(function(error) {
+        console.error("Error detected: ", error);
+      });
+    }
   }
 
   componentDidMount() {
@@ -63,7 +95,7 @@ class App extends Component{
                       <td>{item.number}</td>
                       <td>
                         <button style={{backgroundColor: 'green'}} className='actionButtons'>EDIT</button>
-                        <button style={{backgroundColor: 'red'}} className='actionButtons'>DELETE</button>
+                        <button style={{backgroundColor: 'red'}} className='actionButtons' onClick={()=>this.deleteEntry(item.id)}>DELETE</button>
                       </td>
                     </tr>);
                   })
