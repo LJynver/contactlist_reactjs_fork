@@ -11,13 +11,13 @@ class FormInterface extends Component{
             fname: '',
             emailAdd: '',
             contactNum: '',
-            curEmail: ''
+            curEmail: '' //this is only for insertion
         };
         this.formSubmitted = this.formSubmitted.bind(this);
         this.inputType = this.inputType.bind(this);
     }
     
-    inputType(event) {
+    inputType(event) { //as it is being typed, the data is updated to the this.state object
         this.setState(
             {
                 [event.target.name]: event.target.value
@@ -28,7 +28,7 @@ class FormInterface extends Component{
     formSubmitted(e){
         e.preventDefault();
         
-        const data = {
+        const data = { //variable constant data gets a hold of the this.state datas
             fname: this.state.fname,
             lname: this.state.lname,
             emailAdd: this.state.emailAdd,
@@ -67,7 +67,7 @@ class FormInterface extends Component{
         }
     }
 
-    componentDidMount() {
+    componentDidMount() { //method only does its thing when the state.editID was set
         if (this.props.location.state && this.props.location.state.editID) {
             const editID = this.props.location.state.editID;
             axios.get(`http://localhost/contactlist_reactjs_fork/src/backends/read.php?id=${editID}`)
@@ -118,3 +118,5 @@ class FormInterface extends Component{
 }
 
 export default withRouter(FormInterface);
+
+//fixed some typos in Sir's original repo. It was the maxLength attribute

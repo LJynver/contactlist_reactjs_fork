@@ -4,7 +4,10 @@ import FormInterface from './components/FormInterface.jsx';
 import { withRouter } from 'react-router-dom/cjs/react-router-dom.min';
 import axios from 'axios';
 
-//THIS REQUIRES AXIOS
+//Requirements: Use Axios and withRouter
+
+//This is a forked version of Sir Belarmino's repository
+//Some of the codes like fetch are retained
 
 class App extends Component{
   constructor(){
@@ -13,19 +16,19 @@ class App extends Component{
       data: [],
       editID: null
     }
-    this.deleteEntry = this.deleteEntry.bind(this);
+    this.deleteEntry = this.deleteEntry.bind(this); //ensures that methods in this class is binded to this instance
   }
 
-  handleButtonClick = (editID) => {
+  handleButtonClick = (editID) => { //passes the entry's ID as a prop
     this.props.history.push({
-      pathname: '/form-interface',
-      state: { editID: editID }
+      pathname: '/form-interface', //required syntax
+      state: { editID: editID } //optional syntax: contains an object to be passed as a prop
     });
   }
 
   deleteEntry(id) {
     if (confirm("This entry will be deleted! Proceed?")) {
-      fetch('http://localhost/contactlist_reactjs_fork/src/backends/delete.php', {
+      fetch('http://localhost/contactlist_reactjs_fork/src/backends/delete.php', { //native fetch
         method: 'POST',
         headers: {
           'Content-type': 'application/x-www-form-urlencoded'
@@ -33,7 +36,7 @@ class App extends Component{
         body: 'id='+id
       })
       .then((response) => response.json())
-      .then((res) => {
+      .then((res) => { //response is in JSON format, however AXIOS reduces the need to JSON the response
         alert(res["message"]);
         if (res["status"] == 200) {
           var arr = this.state.data;
@@ -57,7 +60,7 @@ class App extends Component{
   componentDidMount() {
     var self = this;
     var contactsData;
-    var xhttp = new XMLHttpRequest();
+    var xhttp = new XMLHttpRequest(); //AJAX
     xhttp.open("GET", "http://localhost/contactlist_reactjs_fork/src/backends/read.php", true);
     xhttp.send();
     xhttp.onreadystatechange = function(){
@@ -116,3 +119,5 @@ class App extends Component{
 }
 
 export default withRouter(App);
+
+//item.id is needed if you do not want that error on your console popping in again
