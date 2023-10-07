@@ -1,5 +1,6 @@
 <?php
-    include_once("db_connect.php");
+    require("db_connect.php");
+
     $retVal = "Edit failed.";
     $isValid = true;
     $status = 400;
@@ -13,7 +14,7 @@
 
     // Check if email already exists
     if($isValid){
-        $stmt = $con->prepare("SELECT * FROM contact WHERE email = ?");
+        $stmt = $conn->prepare("SELECT * FROM contact WHERE email = ?");
         $stmt->bind_param("s", $emailAdd);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -29,7 +30,7 @@
     // Update records
     if($isValid){
         try {
-            $stmt = $con->prepare("UPDATE contact SET firstName = '$fname', lastName = '$lname', email = '$emailAdd', number = '$contactNum' WHERE id = '$id'");
+            $stmt = $conn->prepare("UPDATE contact SET firstName = '$fname', lastName = '$lname', email = '$emailAdd', number = '$contactNum' WHERE id = '$id'");
             $stmt->execute();
             $stmt->close();
             $status = 200;

@@ -17,7 +17,10 @@ class App extends Component{
   }
 
   handleButtonClick = (editID) => {
-    this.props.history.push('/form-interface');
+    this.props.history.push({
+      pathname: '/form-interface',
+      state: { editID: editID }
+    });
   }
 
   deleteEntry(id) {
@@ -50,8 +53,6 @@ class App extends Component{
       });
     }
   }
-
-
 
   componentDidMount() {
     var self = this;
@@ -107,7 +108,7 @@ class App extends Component{
               </tbody>
             </table>
             <br/>
-            <button className='AddButton' onClick={this.handleButtonClick}>Add New</button>
+            <button className='AddButton' onClick={()=>this.handleButtonClick()}>Add New</button>
         </div>
       </div>
     );

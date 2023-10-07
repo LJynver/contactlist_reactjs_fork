@@ -4,13 +4,14 @@ import '../App.css';
 import axios from "axios";
 
 class FormInterface extends Component{
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             lname: '',
             fname: '',
             emailAdd: '',
-            contactNum: ''
+            contactNum: '',
+            curEmail: ''
         };
         this.formSubmitted = this.formSubmitted.bind(this);
         this.inputType = this.inputType.bind(this);
@@ -31,21 +32,61 @@ class FormInterface extends Component{
             fname: this.state.fname,
             lname: this.state.lname,
             emailAdd: this.state.emailAdd,
-            contactNum: this.state.contactNum
+            contactNum: this.state.contactNum,
+            curEmail: this.state.curEmail
         }
 
-        console.log(data);
+        if (this.props.location.state && this.props.location.state.editID) {
 
-        axios.post(`http://localhost/contactlist_reactjs_fork/src/backends/add.php?fname=${data.fname}&lname=${data.lname}&emailAdd=${data.emailAdd}&contactNum=${data.contactNum}`)
-        .then((response)=> {
-            if (response.status == 200) {
-                alert(response.data.message);
-                this.props.history.push('/');
-            }
-        })
-        .catch((error)=> {
-            console.error(error);
-        });
+            const editID = this.props.location.state.editID;
+            axios.post(`http://localhost/contactlist_reactjs_fork/src/backends/edit.php?id=${editID}&fname=${data.fname}&lname=${data.lname}&emailAdd=${data.emailAdd}&contactNum=${data.contactNum}&curEmail=${data.curEmail}`)
+            .then((response) => {
+                if (response.status == 200) {
+                    alert(response.data.message);
+                    this.props.history.push('/');
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+            ;
+
+        } else {
+
+            axios.post(`http://localhost/contactlist_reactjs_fork/src/backends/add.php?fname=${data.fname}&lname=${data.lname}&emailAdd=${data.emailAdd}&contactNum=${data.contactNum}`)
+            .then((response)=> {
+                if (response.status == 200) {
+                    alert(response.data.message);
+                    this.props.history.push('/');
+                }
+            })
+            .catch((error)=> {
+                console.error(error);
+            });
+
+        }
+    }
+
+    componentDidMount() {
+        if (this.props.location.state && this.props.location.state.editID) {
+            const editID = this.props.location.state.editID;
+            axios.get(`http://localhost/contactlist_reactjs_fork/src/backends/read.php?id=${editID}`)
+            .then((response) => {
+                if (response.status == 200) {
+                    console.log(response.data.data[0]);
+                    this.setState({
+                        lname: response.data.data[0].lastName || '',
+                        fname: response.data.data[0].firstName || '',
+                        emailAdd: response.data.data[0].email || '',
+                        contactNum: response.data.data[0].number || '',
+                        curEmail: response.data.data[0].email || ''
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        }
     }
 
     render(){
@@ -58,10 +99,14 @@ class FormInterface extends Component{
                     <br/>
                     <h2 style={{margin: '10px'}}>Add New Contact here</h2><br/>
                         <form id="modalForm" onSubmit={this.formSubmitted}>
-                            <input onChange={this.inputType} required maxlength="50" name="lname" id="lname" placeholder="Last name" className="inputFields"/><br/>
-                            <input onChange={this.inputType}  required maxlength="50" name="fname" id="fname" placeholder="First name" className="inputFields"/><br/>
-                            <input onChange={this.inputType}  required maxlength="50" name="emailAdd" id="emailAdd" type="email" placeholder="Email address" className="inputFields"/><br/>
-                            <input onChange={this.inputType}  required maxlength="15" name="contactNum" id="contactNum" type="tel" placeholder="Contact number" className="inputFields"/><br/>
+                            <input onChange={this.inputType} required maxLength="50" name="lname" id="lname" placeholder="Last name" className="inputFields" value={this.state.lname}/><br/>
+
+                            <input onChange={this.inputType}  required maxLength="50" name="fname" id="fname" placeholder="First name" className="inputFields" value={this.state.fname}/><br/>
+
+                            <input onChange={this.inputType}  required maxLength="50" name="emailAdd" id="emailAdd" type="email" placeholder="Email address" className="inputFields" value={this.state.emailAdd}/><br/>
+
+                            <input onChange={this.inputType}  required maxLength="15" name="contactNum" id="contactNum" type="tel" placeholder="Contact number" className="inputFields" value={this.state.contactNum}/><br/>
+
                             <button id="btnName" type="submit" onClick={this.formSubmitted}>Submit</button>
                         </form>
                     <a href="/ " style={{margin: '20px'}}>Return to Home</a>

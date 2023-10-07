@@ -36,7 +36,7 @@
     if($isValid){
         try {
             $stmt = $conn->prepare("INSERT INTO contact(firstName,lastName, email, number) values( ? , ? , ? , ? )");
-            $stmt->bind_param("sssi",$fname,$lname,$emailAdd,$contactNum);
+            $stmt->bind_param("ssss",$fname,$lname,$emailAdd,$contactNum);
             $stmt->execute();
             $stmt->close();
             $data = mysqli_insert_id($conn);
