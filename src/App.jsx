@@ -2,17 +2,21 @@ import './App.css'
 import React, {Component} from 'react'
 import FormInterface from './components/FormInterface.jsx';
 import { withRouter } from 'react-router-dom/cjs/react-router-dom.min';
+import axios from 'axios';
+
+//THIS REQUIRES AXIOS
 
 class App extends Component{
   constructor(){
     super();
     this.state = {
-      data: []
+      data: [],
+      editID: null
     }
     this.deleteEntry = this.deleteEntry.bind(this);
   }
 
-  handleButtonClick = () => {
+  handleButtonClick = (editID) => {
     this.props.history.push('/form-interface');
   }
 
@@ -28,15 +32,15 @@ class App extends Component{
       .then((response) => response.json())
       .then((res) => {
         alert(res["message"]);
-        if (res["message"] == 200) {
+        if (res["status"] == 200) {
           var arr = this.state.data;
           const delIndex = arr.findIndex(function(item) {
-            item.id === id;
+            return item.id == id; // Use == for comparison
           });
           if (delIndex !== -1) {
             arr.splice(delIndex, 1);
           }
-          this.state({
+          this.setState({
             data: arr
           });
         }
@@ -46,6 +50,8 @@ class App extends Component{
       });
     }
   }
+
+
 
   componentDidMount() {
     var self = this;
@@ -71,30 +77,28 @@ class App extends Component{
     return(
       <div style={{position: 'relative', width: '100%'}}>
         <div id="contactList" className='divTable'>
-            <center><h1>Contact List</h1></center>
+            <center><h1 style={{margin: '30px'}}>Contact List</h1></center>
             <table id="contactTable" className='MainTable'>
               <thead>
                 <tr>
-                    <th>ID</th>
                     <th>LAST NAME</th>
                     <th>FIRST NAME</th>
                     <th>EMAIL ADDRESS</th>
                     <th>CONTACT NUMBER</th>
-                    <th style={{width: '100px'}}></th>
+                    <th style={{width: '300px'}}>OPTIONS</th>
                 </tr>
               </thead>
               <tbody>
                 {
                   this.state.data.map((item)=>{
                     return(
-                    <tr>
-                      <td>{item.id}</td>
+                    <tr key={item.id}>
                       <td>{item.lastName}</td>
                       <td>{item.firstName}</td>
                       <td>{item.email}</td>
                       <td>{item.number}</td>
                       <td>
-                        <button style={{backgroundColor: 'green'}} className='actionButtons'>EDIT</button>
+                        <button style={{backgroundColor: 'green'}} className='actionButtons' onClick={()=>this.handleButtonClick(item.id)}>EDIT</button>
                         <button style={{backgroundColor: 'red'}} className='actionButtons' onClick={()=>this.deleteEntry(item.id)}>DELETE</button>
                       </td>
                     </tr>);
