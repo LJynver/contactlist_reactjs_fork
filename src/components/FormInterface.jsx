@@ -11,11 +11,11 @@ class FormInterface extends Component{
             fname: '',
             emailAdd: '',
             contactNum: '',
-            curEmail: '' //this is only for insertion
+            curEmail: '' //this is only for edit
         };
         this.formSubmitted = this.formSubmitted.bind(this);
         this.inputType = this.inputType.bind(this);
-    }
+    } 
     
     inputType(event) { //as it is being typed, the data is updated to the this.state object
         this.setState(
